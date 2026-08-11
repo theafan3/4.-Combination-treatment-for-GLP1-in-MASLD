@@ -1,0 +1,42 @@
+目前GLP-1靶点药物非常热门，使用非常多。
+临床研究证据表明，GLP-1药物联合使用其他药物，对增加其单独使用的效果。
+但是，在肝硬化人群中，我们不知道这种单独使用或者是联合使用，对疾病结局的影响如何。
+
+因此，本研究将给予MarketScan进行。通过纵向研究，比单独使用GLP-1药物和市面上热门的联合治疗方案，对与疾病不良结局的影响。
+
+
+1. GLP1+tirzepatide
+2. 
+
+
+
+
+Dear Dr. Nguyen,
+
+I am currently working on Dr. Rui's project: The clincial outcome for cirrhosis patoents who received GLP-1 RAs treatment.
+
+
+I am thinking that may be I can do a project about the combination treatment for patients with cirrhosis - compariation for different combinations
+Because I have working on this database for a long time so that I already have almost alll the variables I need.
+I have do a combination treatment for the some group :
+
+1. GLP1+GIP（tirzepatide）
+2. GLP+SGLT2
+3. insulin
+4. Metformin
+5. GLP-1 + GIP + Glucagon
+
+GLP-1 + SGLT2
+
+
+I have some premilary results.
+
+I want to make it into a comapariation . Do you have any suggestions that which compariation groups would be interesting and have clinical implications?
+
+
+
+
+
+
+
+
