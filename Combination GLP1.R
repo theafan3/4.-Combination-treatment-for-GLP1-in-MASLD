@@ -2,11 +2,28 @@ install.packages('tidyverse')
 install.packages('tableone')
 library(tidyverse)
 library(tableone)
-cd /target file
-git init # choose the file
-git add . # 告诉 Git「我要保存这些修改」。
-git commit -m "Initial commit" # 正式保存一个本地历史版本（快照）。
-git push # 把这些历史版本同步到 GitHub。
+
+# Github同步
+{
+  # 第一次创建一个同步
+  cd /Users/Hong/Desktop/Project2/1. My project/4. Combination treatment for GLP1 in MASLD # can not identify the space so should with ""
+  git init # 告诉 Git："从今天开始帮我记录这个项目的历史。"
+  touch .gitignore
+  nano .gitignore
+  将 data/ .DS_Store 写入 告诉 Git："这些文件不要管理。"
+  
+  git add . # 告诉 Git「我要保存这些修改」。
+  git commit -m "what i did today" # 正式保存一个本地历史版本（快照）。
+  # 去Github创建一个Repository（只做一次） 告诉Git上传到哪里
+  git remote add origin git@github.com:theafan3/4.-Combination-treatment-for-GLP1-in-MASLD.git
+  git push -u origin main # 把这些历史版本同步到 GitHub。
+} # 第一次生成一个
+git status
+git add .
+git commit -m "今天做了什么"
+git push
+
+
 # hong fan
 # Oct 27 2025
 # Revision Auguest 11, 2026
@@ -196,8 +213,8 @@ df <- df %>%
 
 ## Analysis pool:
 ## - treated candidates: addon_1y==1
-## - controls: ever_combo==0 (never statin during follow-up)
-df_ana <- df %>% filter(ever_combo == 0L | addon_1y == 1L)
+## - controls: ever_combo==0 (never statin during follow-up) 修改后不要这样了
+df_ana <- df
 
 ## 3) PS covariates (time-updated)
 ps_covars_tv <- c(
@@ -245,7 +262,7 @@ for (k in window_grid) {
           glp1_to_statin_days <= t_end,
         1L, 0L
       ),
-      eligible_control = if_else(ever_combo == 0L, 1L, 0L)
+      eligible_control = if_else(is.na(glp1_to_statin_days) | glp1_to_statin_days > t_end, 1L, 0L)
     ) %>%
     filter(treated_window == 1L | eligible_control == 1L)
   
@@ -325,7 +342,7 @@ for (k in window_grid) {
     data     = risk_set_k_ps,
     method   = "nearest",
     distance = "logit",
-    ratio    = 4,     # change to 4 if you want 1:4
+    ratio    = 1,     # change to 4 if you want 1:4
     caliper  = 0.1,
     replace  = FALSE
   )
@@ -369,15 +386,20 @@ matched_all <- matched_all %>%
   )
 
 library(arrow)
-arrow::write_parquet(matched_all, "/home/hongfan1/Desktop/combine/matched_MASLD_GLP1cohort.csv")
+arrow::write_parquet(matched_all, "matched_MASLD_GLP1cohort.csv")
 # Sensitivity analysis PSM 1:1
-arrow::write_parquet(matched_all, "/home/hongfan1/Desktop/combine/subPS1.1_MASLD_GLP1cohort.csv")
-# 
+arrow::write_parquet(matched_all, "subPS1.1_MASLD_GLP1cohort.csv")
+
+# arrow::write_parquet(matched_all, "/home/hongfan1/Desktop/combine/matched_MASLD_GLP1cohort.csv")
+# # Sensitivity analysis PSM 1:1
+# arrow::write_parquet(matched_all, "/home/hongfan1/Desktop/combine/subPS1.1_MASLD_GLP1cohort.csv")
+
 
 
 ###Analysis outcomes####
 library(arrow)
-matched_all <- arrow::read_parquet("/home/hongfan1/Desktop/combine/matched_MASLD_GLP1cohort.csv")
+matched_all <- arrow::read_parquet("matched_MASLD_GLP1cohort.csv")
+matched_all <- arrow::read_parquet("subPS1.1_MASLD_GLP1cohort.csv")
 # subgroup
 matched_all<-matched_all[which(matched_all$age<55),] # young
 matched_all<-matched_all[which(matched_all$age>=55),] # old
@@ -748,7 +770,7 @@ df <- df %>%
 ## Analysis pool:
 ## - treated candidates: addon_1y==1
 ## - control candidates: ever_combo==0 (never GLP1 during follow-up)
-df_ana <- df %>% filter(ever_combo == 0L | addon_1y == 1L)
+df_ana <- df
 
 ## 3) PS covariates (time-updated at each exposure set)
 ##    NOTE: Use *_index columns you already have.
@@ -804,7 +826,7 @@ for (k in window_grid) {
           statin_to_GLP1_days <= t_end,
         1L, 0L
       ),
-      eligible_control = if_else(ever_combo == 0L, 1L, 0L)
+      eligible_control = if_else(is.na(statin_to_GLP1_days) | statin_to_GLP1_days > t_end, 1L, 0L)
     ) %>%
     filter(treated_window == 1L | eligible_control == 1L)
   
